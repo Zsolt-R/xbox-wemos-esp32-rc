@@ -93,38 +93,19 @@ void loop() {
       // Serial.print((int)xboxController.xboxNotif.joyRVert / 100);
 
       int controllerRVSpeed = (int)xboxController.xboxNotif.joyRVert / 100;
-      int controllerRHSpeed = (int)xboxController.xboxNotif.joyRHori / 100;
+      // int controllerRHSpeed = (int)xboxController.xboxNotif.joyRHori / 100;
 
       int speed = calculateSpeed(controllerRVSpeed);
-      int speedTurn = calculateSpeed(controllerRHSpeed);
+      // int speedTurn = calculateSpeed(controllerRHSpeed);
 
       int directionMotor1 = 1;
       int directionMotor2 = 1;
-
-      bool isTurning = speedTurn > speed;
 
       // Use of the drive function which takes as arguements the speed
       // and optional duration.  A negative speed will cause it to go
       // backwards.  Speed can be from -255 to 255.  Also use of the 
       // brake function which takes no arguements.
       // ex motor2.drive(255.1000);       
-
-      if(isTurning){
-        speed = speedTurn;  
-
-        // Turn left
-        if(!inRange(350, 655, controllerRHSpeed) && isTurning ){       
-          directionMotor1 = -1;
-          directionMotor2 = 1;
-
-        // Turn right
-        }else{
-          directionMotor1 = 1;
-          directionMotor2 = -1;
-        }
-
-      }else{
-        speed = speed;
         // Backward
         if(!inRange(320, 655, controllerRVSpeed) )
         {
@@ -134,16 +115,15 @@ void loop() {
           directionMotor1 = -1;
           directionMotor2 = -1;
         }
-      }
 
       motor1.drive(speed * directionMotor1);  
       motor2.drive(speed * directionMotor2);       
 
       // Servo
       int val1 = (float)xboxController.xboxNotif.joyLHori / 100;
-      int servoVal = map(val1, 655, 0, 0, 180);  // align pot pointer to servo arm 
+      int servoVal = map(val1, 655, 0, 0, 60);  // align pot pointer to servo arm 
       myservo.write(servoPin1, servoVal);      // set the servo position (degrees)
-
+    }
       // Serial.print("Speed: ");
       // Serial.print(speed );
       // Serial.println("");
@@ -162,13 +142,13 @@ void loop() {
       // Serial.print("ServoVal: ");
       // Serial.print(servoVal);
       // Serial.println("");
-    }
+    
   } else {
     Serial.println("not connected");
     if (xboxController.getCountFailedConnection() > 2) {
       ESP.restart();
     }
   }
-  Serial.println("at " + String(millis()));
+  // Serial.println("at " + String(millis()));
   delay(10);
 }
