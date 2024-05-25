@@ -141,7 +141,7 @@ void loop() {
 
       // Servo
       int val1 = (float)xboxController.xboxNotif.joyLHori / 100;
-      int servoVal = map(val1, 655, 0, 0, 180);  // align pot pointer to servo arm 
+      int servoVal = map(val1, 655, 0, 0, 80);  // align pot pointer to servo arm 
       myservo.write(servoPin1, servoVal);      // set the servo position (degrees)
 
       // Serial.print("Speed: ");
